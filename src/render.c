@@ -6,7 +6,7 @@
 /*   By: pgomes <pgomes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 09:58:45 by pgomes            #+#    #+#             */
-/*   Updated: 2025/09/26 00:19:00 by pgomes           ###   ########.fr       */
+/*   Updated: 2025/09/26 09:12:04 by pgomes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int ft_draw_circle(t_data *data, int start_y, int start_x)
 	int x;
 	int y;
 	
-	printf("o circulo x %d y %d\n", start_x, start_y);
 	y = -R ;
 	while (y <= R)
 	{		
@@ -81,10 +80,18 @@ void ft_draw_line(t_data *data, t_inic *inic)
 int ft_draw_edge(t_data *data, t_inic *inic)
 {
 	t_line line;
+	t_inic temp_inic;
 	int i;
+	int orig_x1, orig_y1, orig_x2, orig_y2;
 	
-	line.vx = inic->x2 - inic->x1;
-	line.vy = inic->y2 - inic->y1;
+	// Salvar as coordenadas originais
+	orig_x1 = inic->x1;
+	orig_y1 = inic->y1;
+	orig_x2 = inic->x2;
+	orig_y2 = inic->y2;
+	
+	line.vx = orig_x2 - orig_x1;
+	line.vy = orig_y2 - orig_y1;
 	line.dist = sqrt((line.vx * line.vx) + (line.vy * line.vy));
 	line.ux = line.vx / line.dist;
 	line.uy = line.vy / line.dist;
@@ -94,11 +101,12 @@ int ft_draw_edge(t_data *data, t_inic *inic)
 	i = -6;
 	while (++i <= 5)
 	{
-	inic->x1 = (inic->x1 + line.ux * R) + line.px * i;
-	inic->y1 = (inic->y1 + line.uy * R) + line.py * i;
-	inic->x2 = (inic->x2 - line.ux * R) + line.px * i;
-	inic->y2 = (inic->y2 - line.uy * R) + line.py * i;
-		ft_draw_line(data, inic);
+		// Usar as coordenadas originais para cada cálculo
+		temp_inic.x1 = (orig_x1 + line.ux * R) + line.px * i;
+		temp_inic.y1 = (orig_y1 + line.uy * R) + line.py * i;
+		temp_inic.x2 = (orig_x2 - line.ux * R) + line.px * i;
+		temp_inic.y2 = (orig_y2 - line.uy * R) + line.py * i;
+		ft_draw_line(data, &temp_inic);
 	}
 	return (0);	
 }
