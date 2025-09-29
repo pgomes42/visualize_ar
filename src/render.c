@@ -6,7 +6,7 @@
 /*   By: pgomes <pgomes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 09:58:45 by pgomes            #+#    #+#             */
-/*   Updated: 2025/09/28 14:30:35 by pgomes           ###   ########.fr       */
+/*   Updated: 2025/09/29 12:39:51 by pgomes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,56 +23,61 @@ void	put_pixel_to_image(t_img *img, int x, int y, int color)
 	}
 }
 
-int ft_draw_circle(t_data *data, int start_y, int start_x)
+int ft_draw_circle(t_data *data, int start_y, int start_x, int radius, int color)
 {
 	int x;
 	int y;
-	
-	printf("circulo em 1 x1 %d y1 %d \n",start_x, start_y);
-	y = -R ;
-	while (y <= R)
-	{		
-			x = -R;
-			while (x <= R)
+	int screen_x;
+	int screen_y;
+
+	y = -radius;
+	while (y <= radius)
+	{
+		x = -radius;
+		while (x <= radius)
+		{
+			if (((x * x) + (y * y)) <= (radius * radius))
 			{
-				if (((x * x) + (y * y)) <= ( R * R))
-					put_pixel_to_image(data->img, start_x + x, start_y + y, 0xFFFAAF);
-				x++;
+				screen_x = start_x + x + data->offset_x;
+				screen_y = start_y + y + data->offset_y;
+				put_pixel_to_image(data->img, screen_x, screen_y, color);
 			}
-			y++;
+			x++;
+		}
+		y++;
 	}
-		return (0);
+	return (0);
 }
-void ft_draw_line(t_data *data, t_inic *inic)
+void ft_draw_thick_line(t_data *data, int x1, int y1, int x2, int y2, int thickness)
 {
-	t_inic lines;
+	int dx;
+	int dy;
+	int sx;
+	int sy;
 	int err;
 	int e2;
 	
-	lines.x1 = abs(inic->x2 - inic->x1);
-	lines.y1 = -abs(inic->y2 - inic->y1);
-	lines.x2 = -1;
-	lines.y2 = -1;
-	if (inic->x1 < inic->x2)
-		lines.x2 = 1;
-	if(inic->y1 < inic->y2)
-		lines.y2 = 1;
-	err = lines.x1 + lines.y1;
+	dx = abs(x2 - x1);
+	dy = -abs(y2 - y1);
+	sx = (x1 < x2) ? 1 : -1;
+	sy = (y1 < y2) ? 1 : -1;
+	err = dx + dy;
+	
 	while (1)
 	{
-		put_pixel_to_image(data->img, inic->x1 , inic->y1 , 0xAAAAAA);	
-		if (inic->x1 == inic->x2 && inic->y1 == inic->y2)
+		ft_draw_circle(data, y1, x1, thickness / 2, 0xAAAAAA);
+		if (x1 == x2 && y1 == y2)
 			break;
 		e2 = 2 * err;
-		if(e2 >= lines.y1)
+		if (e2 >= dy)
 		{
-			err += lines.y1;
-			inic->x1 += lines.x2;
+			err += dy;
+			x1 += sx;
 		}
-		if(e2 <= lines.x1)
+		if (e2 <= dx)
 		{
-			err += lines.x1;
-			inic->y1 += lines.y2;
+			err += dx;
+			y1 += sy;
 		}
 	}
 }
@@ -81,26 +86,63 @@ void ft_draw_line(t_data *data, t_inic *inic)
 int ft_draw_edge(t_data *data, t_inic *inic)
 {
 	t_line line;
-	t_inic temp_inic;
-	int i;
+	int start_x;
+	int start_y;
+	int end_x;
+	int end_y;
 	
-	line.vx = inic->x2 - inic->x1;;
+	line.vx = inic->x2 - inic->x1;
 	line.vy = inic->y2 - inic->y1;
 	line.dist = sqrt((line.vx * line.vx) + (line.vy * line.vy));
+	if (line.dist == 0)
+		return (0);
 	line.ux = line.vx / line.dist;
 	line.uy = line.vy / line.dist;
-	line.px = -line.uy;
-	line.py = line.ux;
-	i = -(R * 0.1);
-	while (++i <= (R * 0.1))
-	{
-		temp_inic.x1 = (inic->x1 + line.ux * R) + line.px * i;
-		temp_inic.y1 = (inic->y1 + line.uy * R) + line.py * i;
-		temp_inic.x2 = (inic->x2 - line.ux * R) + line.px * i;
-		temp_inic.y2 = (inic->y2 - line.uy * R) + line.py * i;
-		ft_draw_line(data, &temp_inic);
-	}
+	start_x = (int)(inic->x1 + line.ux * R + 0.5);
+	start_y = (int)(inic->y1 + line.uy * R + 0.5);
+	end_x = (int)(inic->x2 - line.ux * R + 0.5);
+	end_y = (int)(inic->y2 - line.uy * R + 0.5);
+	ft_draw_thick_line(data, start_x, start_y, end_x, end_y, (R * 0.2));
 	return (0);	
+}
+
+t_inic *ft_get_inic(t_inic *parent, int sign, int num_par) 
+{
+    t_inic *inic;
+
+    inic = (t_inic *)malloc(sizeof(t_inic));
+    if (sign < 2)
+    {
+        if (sign == 1)
+        { 
+            inic->x1 = parent->x1;
+            inic->x2 = (inic->x1 + ((R + 10) * num_par)); 
+        }
+        else
+        { 
+            inic->x1 = parent->x1;
+            inic->x2 = (inic->x1 - ((R + 10) * num_par));
+        }
+        inic->y1 = parent->y1;
+            
+    }
+    else if (sign >= 2)
+    {
+        if(sign == 2)
+        {
+            inic->x1 = parent->x1 + ((R + 10) * num_par);
+            inic->x2 = (inic->x1 + ((R + 10) * num_par));
+        }
+        else
+        {
+            inic->x1 = parent->x1 - ((R + 10) * num_par);
+            inic->x2 = (inic->x1 - ((R + 10) * num_par));
+        }
+        inic->y1 = parent->y1 + (30 + R * 2);
+    }
+        inic->y2 = (inic->y1 +(30 + R * 2)); 
+    
+        return (inic);
 }
 
 int	ft_draw_background(t_img *img)
@@ -118,4 +160,41 @@ int	ft_draw_background(t_img *img)
 		}
 	}
 	return (0);
+}
+
+int key_hook(int keycode, t_data *data)
+{
+	if (keycode == KEY_ESC)
+		close_window(data);
+	else if (keycode == KEY_LEFT)
+		data->offset_x += MOVE_SPEED;
+	else if (keycode == KEY_RIGHT)
+		data->offset_x -= MOVE_SPEED;
+	else if (keycode == KEY_UP)
+		data->offset_y += MOVE_SPEED;
+	else if (keycode == KEY_DOWN)
+		data->offset_y -= MOVE_SPEED;
+	
+	render_tree(data);
+	return (0);
+}
+
+int close_window(t_data *data)
+{
+	mlx_destroy_window(data->mlx_ptr, data->mlx_win);
+	exit(0);
+	return (0);
+}
+
+void render_tree(t_data *data)
+{
+	ft_draw_background(data->img);
+	if (data->ast)
+	{
+		data->deleey = 0;
+		ft_draw_ast(data, data->ast, data->inic);
+		ft_draw_nodes(data, data->ast, data->inic);
+		ft_put_str_ast(data, data->ast, data->inic);
+	}
+	
 }

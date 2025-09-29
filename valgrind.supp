@@ -1,0 +1,18 @@
+{
+   X11_writev_uninit
+   Memcheck:Param
+   writev(vector[0])
+   fun:__syscall_cancel
+   ...
+   fun:mlx_*
+}
+
+{
+   X11_syscall_uninit
+   Memcheck:Param
+   writev(vector[0])
+   fun:*
+   ...
+   obj:*/libX11.so*
+   obj:*/libxcb.so*
+}
