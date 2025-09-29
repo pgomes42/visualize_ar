@@ -6,7 +6,7 @@
 /*   By: pgomes <pgomes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 11:42:18 by pgomes            #+#    #+#             */
-/*   Updated: 2025/09/26 00:00:53 by pgomes           ###   ########.fr       */
+/*   Updated: 2025/09/27 21:03:14 by pgomes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,86 +20,110 @@ static int ft_clean(t_data *data)
         free(data->img);
     if (data->mlx_win)
         mlx_destroy_window(data->mlx_ptr, data->mlx_win);
+    free(data->inic);
+    ft_clear_ast(data->ast);
     exit (0);
 }
-t_inic *ft_get_inic(t_inic *inic, int sign, int level)
-{  
-    if (inic->x2 == -1 || inic->y2 == -1)
-    {
-        if (sign)
-            inic->x2 = inic->x1 + 150;
-        else
-            inic->x2 = inic->x1 - 150;
-        inic->y2 = inic->y1 + 175; 
-    }
-    else
-       {
-       if (sign)
-       {
-            inic->x1 += 150;
-            inic->x2 += 150; 
-       } 
-       else
-       {
-            inic->x1 -= 150;
-            inic->x2 -= 150;
-       }
-       inic->y1 = 100 + (175 * level);
-       inic->y2 = inic->y1 + (175 * level);
-    }
-    return (inic);
-}
-t_inic *new_inic(t_inic *inc)
+
+t_inic *ft_get_inic(t_inic *parent, int sign, int num_par) 
 {
     t_inic *inic;
 
     inic = (t_inic *)malloc(sizeof(t_inic));
-    inic->x1 = inc->x1;
-    inic->y1 = inc->y1;
-    inic->x2 = inc->x2;
-    inic->y2 = inc->y2;
-    return (inic);
-}
-static void ft_draw_ast(t_data *data, t_ast *ast, int sign, int level)
+    if (sign < 2)
+    {
+        if (sign == 1)
+        { 
+            inic->x1 = parent->x1;
+            inic->x2 = (inic->x1 + ((R + 10) * num_par)); 
+        }
+        else
+        { 
+            inic->x1 = parent->x1;
+            inic->x2 = (inic->x1 - ((R + 10) * num_par));
+        }
+        inic->y1 = parent->y1;
+            
+    }
+    else if (sign >= 2)
+    {
+        if(sign == 2)
+        {
+            inic->x1 = parent->x1 + ((R + 10) * num_par);
+            inic->x2 = (inic->x1 + ((R + 10) * num_par));
+        }
+        else
+        {
+            inic->x1 = parent->x1 - ((R + 10) * num_par);
+            inic->x2 = (inic->x1 - ((R + 10) * num_par));
+        }
+        inic->y1 = parent->y1 + (30 + R * 2);
+    }
+        inic->y2 = (inic->y1 +(30 + R * 2)); 
+    
+        return (inic);
+} 
+static void ft_put_str_ast(t_data *data, t_ast *ast, t_inic *inic)
 {
-   t_inic *inic;
+    t_inic *inic_tmp;
+    int num_par;
     
     if (!ast)
-        return ;
-   (void)sign; 
-   //inic = NULL;
-   if (ast->left)
-   {
-        inic = ft_get_inic(new_inic(data->inic), 0, _SC_LEVEL3_CACHE_ASSOC);
-        ft_draw_edge(data, inic);
-        free(inic);
-    //mlx_put_image_to_window(data->mlx_ptr, data->mlx_win, data->img->img,0 , 0));
-   // sleep(3);
-   }
-    if (ast->right)
-    {
-        inic = ft_get_inic(new_inic(data->inic), 1, level);
-        ft_draw_edge(data, inic);
-        free(inic);
-    }
-    //mlx_put_image_to_window(data->mlx_ptr, data->mlx_win, data->img->img,0 , 0));
-    //sleep(0.3);
-     data->inic = ft_get_inic(data->inic, sign, level);
-    ft_draw_circle(data, data->inic->y1, data->inic->x1);
+        return ; 
+    num_par = ft_get_num_parent(ast, 0);
+     mlx_string_put(data->mlx_ptr, data->mlx_win, inic->x1 - 10, inic->y1, 0x00000, "PACHECO");
+    inic_tmp = ft_get_inic(inic, 3, num_par);
+    ft_put_str_ast(data, ast->left, inic_tmp);
+    free(inic_tmp);
+    inic_tmp = ft_get_inic(inic, 2, num_par);
+    ft_put_str_ast(data, ast->right, inic_tmp);
+    free(inic_tmp);    
+}
+static void ft_draw_ast(t_data *data, t_ast *ast, t_inic *inic)
+{
+    t_inic *inic_tmp;
+    int num_par;
     
-    //ft_draw_ast(data, ast->left, 0, ++level);
-    ft_draw_ast(data, ast->right, 1, ++level);
-    //data->inic = ft_get_inic(data->inic, sign);
-   
-   // mlx_put_image_to_window(data->mlx_ptr, data->mlx_win, data->img->img,0 , 0); 
+    if (!ast)
+        return ; 
+    num_par = ft_get_num_parent(ast, 0);
+    ft_draw_circle(data, inic->y1, inic->x1);
+    mlx_put_image_to_window(data->mlx_ptr, data->mlx_win, data->img->img,0 , 0);
+    sleep(1);
+    inic_tmp = NULL;     
+    if (ast->left)
+    {
+        inic_tmp = ft_get_inic(inic, 0, num_par);
+        
+        ft_draw_edge(data, inic_tmp); 
+        mlx_put_image_to_window(data->mlx_ptr, data->mlx_win, data->img->img,0 , 0);
+        sleep(1);
+        free(inic_tmp);
+    }   
+    if (ast->right)
+    { 
+        inic_tmp = ft_get_inic(inic, 1, num_par); 
+        ft_draw_edge(data, inic_tmp); 
+        mlx_put_image_to_window(data->mlx_ptr, data->mlx_win, data->img->img,0 , 0);
+        sleep(1);
+        free(inic_tmp); 
+    }   
+    inic_tmp = ft_get_inic(inic, 3, num_par);
+    ft_draw_ast(data, ast->left, inic_tmp);
+    free(inic_tmp);
+    inic_tmp = ft_get_inic(inic, 2, num_par);
+    ft_draw_ast(data, ast->right, inic_tmp);
+        free(inic_tmp);
 }
 static int ft_draw(t_data *data)
 {
     ft_creat_ast(data);
-    ft_draw_background( data->img);
-    ft_draw_ast(data, data->ast, 1, 0);
-    mlx_put_image_to_window(data->mlx_ptr, data->mlx_win, data->img->img,0 , 0);
-    return (0);
+    ft_draw_background(data->img);
+     mlx_put_image_to_window(data->mlx_ptr, data->mlx_win, data->img->img,0 , 0);
+ 
+    ft_draw_ast(data, data->ast, data->inic);
+    ft_put_str_ast(data, data->ast, data->inic);
+      return (0);
 }
 
 static void ft_inic(t_data *data)
@@ -116,8 +140,8 @@ int main()
     t_data data;
 
     ft_inic(&data);
-    
     data.mlx_ptr = mlx_init();
+    sleep(3);
     if (!data.mlx_ptr)
         return (1);
     data.img->img = mlx_new_image(data.mlx_ptr, WIDTH, HEIGHT);

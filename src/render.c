@@ -6,7 +6,7 @@
 /*   By: pgomes <pgomes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 09:58:45 by pgomes            #+#    #+#             */
-/*   Updated: 2025/09/26 09:23:41 by pgomes           ###   ########.fr       */
+/*   Updated: 2025/09/28 14:30:35 by pgomes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int ft_draw_circle(t_data *data, int start_y, int start_x)
 	int x;
 	int y;
 	
+	printf("circulo em 1 x1 %d y1 %d \n",start_x, start_y);
 	y = -R ;
 	while (y <= R)
 	{		
@@ -59,7 +60,7 @@ void ft_draw_line(t_data *data, t_inic *inic)
 	err = lines.x1 + lines.y1;
 	while (1)
 	{
-		put_pixel_to_image(data->img, inic->x1 , inic->y1 , 0xAAAAAA);
+		put_pixel_to_image(data->img, inic->x1 , inic->y1 , 0xAAAAAA);	
 		if (inic->x1 == inic->x2 && inic->y1 == inic->y2)
 			break;
 		e2 = 2 * err;
@@ -74,24 +75,24 @@ void ft_draw_line(t_data *data, t_inic *inic)
 			inic->y1 += lines.y2;
 		}
 	}
-	
 }
+
 
 int ft_draw_edge(t_data *data, t_inic *inic)
 {
 	t_line line;
 	t_inic temp_inic;
 	int i;
-		
-	line.vx = inic->x2 - inic->x1;
+	
+	line.vx = inic->x2 - inic->x1;;
 	line.vy = inic->y2 - inic->y1;
 	line.dist = sqrt((line.vx * line.vx) + (line.vy * line.vy));
 	line.ux = line.vx / line.dist;
 	line.uy = line.vy / line.dist;
 	line.px = -line.uy;
 	line.py = line.ux;
-	i = -6;
-	while (++i <= 5)
+	i = -(R * 0.1);
+	while (++i <= (R * 0.1))
 	{
 		temp_inic.x1 = (inic->x1 + line.ux * R) + line.px * i;
 		temp_inic.y1 = (inic->y1 + line.uy * R) + line.py * i;
@@ -113,7 +114,7 @@ int	ft_draw_background(t_img *img)
 		x = -1;
 		while (++x < WIDTH)
 		{
-				put_pixel_to_image(img, x, y, 0xFFFFFF);
+				put_pixel_to_image(img, x, y, 0x00000F);
 		}
 	}
 	return (0);

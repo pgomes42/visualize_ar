@@ -6,16 +6,16 @@
 /*   By: pgomes <pgomes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 11:17:43 by pgomes            #+#    #+#             */
-/*   Updated: 2025/09/25 21:48:58 by pgomes           ###   ########.fr       */
+/*   Updated: 2025/09/27 20:56:24 by pgomes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VISUALIZER_AR_H
 # define VISUALIZER_AR_H
 
-# define R  70 
-# define WIDTH  900
-# define HEIGHT  700
+# define R  40 
+# define WIDTH  1400
+# define HEIGHT  900
 # define Y2 175
 # define X2 150
 
@@ -25,10 +25,11 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <math.h>
+# include <string.h>
 
 typedef struct s_ast
 {
-    void *data;
+    int data;
     struct s_ast *left;
     struct s_ast *right;  
     
@@ -59,8 +60,8 @@ typedef struct s_line
 typedef struct s_inic
 {
     int x1;
-    int x2;
     int y1;
+    int x2;
     int y2;
 } t_inic;
 typedef struct s_data
@@ -74,6 +75,8 @@ typedef struct s_data
     
 }   t_data;
 
+int ft_get_num_parent(t_ast *ast, int i);
+void ft_clear_ast(t_ast *ast);
 void ft_creat_ast(t_data *data);
 int ft_draw_circle(t_data *data, int start_y, int start_x);
 int	ft_draw_background(t_img *img);
