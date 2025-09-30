@@ -6,7 +6,7 @@
 /*   By: pgomes <pgomes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 10:50:00 by pgomes            #+#    #+#             */
-/*   Updated: 2025/09/30 11:24:37 by pgomes           ###   ########.fr       */
+/*   Updated: 2025/09/30 12:00:00 by pgomes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,8 +191,8 @@ t_ast *ast_auto_pipe(void *cmd1_data, void *cmd2_data)
     cmd2 = ast_create_command(cmd2_data);
     if (!cmd1 || !cmd2)
     {
-        if (cmd1) ft_clear_ast(cmd1);
-        if (cmd2) ft_clear_ast(cmd2);
+        if (cmd1) lib_clear_ast_internal(cmd1);
+        if (cmd2) lib_clear_ast_internal(cmd2);
         return (NULL);
     }
     return (ast_create_pipe(cmd1, cmd2));
@@ -202,7 +202,7 @@ t_ast *ast_auto_pipe(void *cmd1_data, void *cmd2_data)
  * Cria automaticamente uma AST para: cmd1 && cmd2
  * @param cmd1_data: dados do primeiro comando
  * @param cmd2_data: dados do segundo comando
- * @return: AST completa do AND/* Operador pipe */
+ * @return: AST completa do AND
  */
 t_ast *ast_auto_and(void *cmd1_data, void *cmd2_data)
 {
@@ -213,8 +213,8 @@ t_ast *ast_auto_and(void *cmd1_data, void *cmd2_data)
     cmd2 = ast_create_command(cmd2_data);
     if (!cmd1 || !cmd2)
     {
-        if (cmd1) ft_clear_ast(cmd1);
-        if (cmd2) ft_clear_ast(cmd2);
+        if (cmd1) lib_clear_ast_internal(cmd1);
+        if (cmd2) lib_clear_ast_internal(cmd2);
         return (NULL);
     }
     return (ast_create_and(cmd1, cmd2));
@@ -235,8 +235,8 @@ t_ast *ast_auto_or(void *cmd1_data, void *cmd2_data)
     cmd2 = ast_create_command(cmd2_data);
     if (!cmd1 || !cmd2)
     {
-        if (cmd1) ft_clear_ast(cmd1);
-        if (cmd2) ft_clear_ast(cmd2);
+        if (cmd1) lib_clear_ast_internal(cmd1);
+        if (cmd2) lib_clear_ast_internal(cmd2);
         return (NULL);
     }
     return (ast_create_or(cmd1, cmd2));
@@ -258,8 +258,8 @@ t_ast *ast_auto_pipe_and(void *cmd1_data, void *cmd2_data, void *cmd3_data)
     cmd3 = ast_create_command(cmd3_data);
     if (!pipe_ast || !cmd3)
     {
-        if (pipe_ast) ft_clear_ast(pipe_ast);
-        if (cmd3) ft_clear_ast(cmd3);
+        if (pipe_ast) lib_clear_ast_internal(pipe_ast);
+        if (cmd3) lib_clear_ast_internal(cmd3);
         return (NULL);
     }
     return (ast_create_and(pipe_ast, cmd3));
@@ -281,8 +281,8 @@ t_ast *ast_auto_and_pipe(void *cmd1_data, void *cmd2_data, void *cmd3_data)
     pipe_ast = ast_auto_pipe(cmd2_data, cmd3_data);
     if (!cmd1 || !pipe_ast)
     {
-        if (cmd1) ft_clear_ast(cmd1);
-        if (pipe_ast) ft_clear_ast(pipe_ast);
+        if (cmd1) lib_clear_ast_internal(cmd1);
+        if (pipe_ast) lib_clear_ast_internal(pipe_ast);
         return (NULL);
     }
     return (ast_create_and(cmd1, pipe_ast));
@@ -350,8 +350,8 @@ t_ast *ast_create_complex_example(void)
     and_part = ast_auto_and(cmd2_data, cmd3_data);
     if (!cmd1 || !and_part)
     {
-        if (cmd1) ft_clear_ast(cmd1);
-        if (and_part) ft_clear_ast(and_part);
+        if (cmd1) lib_clear_ast_internal(cmd1);
+        if (and_part) lib_clear_ast_internal(and_part);
         return (NULL);
     }
     return (ast_create_or(cmd1, and_part));
@@ -368,7 +368,7 @@ void ast_test_auto_creation(t_data *data)
     /* Liberar AST anterior se existir */
     if (data->ast)
     {
-        ft_clear_ast(data->ast);
+        lib_clear_ast_internal(data->ast);
         data->ast = NULL;
     }
     

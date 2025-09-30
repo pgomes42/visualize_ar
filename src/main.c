@@ -21,7 +21,7 @@ static int ft_clean(t_data *data)
     if (data->mlx_win)
         mlx_destroy_window(data->mlx_ptr, data->mlx_win);
     free(data->inic);
-    ft_clear_ast(data->ast);
+    lib_clear_ast_internal(data->ast);
     exit (0);
 }
 

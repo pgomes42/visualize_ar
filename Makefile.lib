@@ -1,0 +1,129 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile.lib                                       :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: pgomes <pgomes@student.42.fr>              +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/09/30 11:30:00 by pgomes            #+#    #+#              #
+#    Updated: 2025/09/30 12:00:00 by pgomes           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+# ============================================================================ #
+#                           MAKEFILE PARA BIBLIOTECA                          #
+#                             AST VISUALIZER                                  #
+# ============================================================================ #
+
+# Nome da biblioteca
+LIB_NAME			= libast_visualizer.a
+LIB_DIR				= lib_ast
+
+# Compilador e flags
+CC					= cc
+CFLAGS				= -Wall -Wextra -Werror -g
+INCLUDES 			= -Iincludes -Ilib/minilibx-linux
+
+# Diretórios
+MLX_PATH    		= lib/minilibx-linux
+OBJ_DIR				= $(LIB_DIR)/obj
+SRC_DIR				= src
+
+# Arquivos da biblioteca (apenas os necessários para a API)
+LIB_SRCS			= src/libast_visualizer.c \
+					  src/ast.c \
+					  src/render.c \
+					  src/text_render.c \
+					  src/ast_adapter.c
+
+# Objetos da biblioteca
+LIB_OBJS			= $(addprefix $(OBJ_DIR)/, $(LIB_SRCS:src/%.c=%.o))
+
+# Cores para output
+GREEN				= \033[0;92m
+YELLOW				= \033[0;93m
+RED					= \033[0;91m
+CYAN				= \033[0;96m
+CLR_RMV				= \033[0m
+
+# ============================================================================ #
+#                                   REGRAS                                    #
+# ============================================================================ #
+
+# Regra principal
+all: $(LIB_NAME)
+
+# Criar biblioteca estática
+$(LIB_NAME): $(LIB_OBJS) mlx
+	@echo "$(GREEN)Criando biblioteca$(CLR_RMV) $(YELLOW)$(LIB_NAME)$(CLR_RMV)..."
+	@mkdir -p $(LIB_DIR)
+	@ar rcs $(LIB_DIR)/$(LIB_NAME) $(LIB_OBJS)
+	@echo "$(GREEN)$(LIB_NAME) criada$(CLR_RMV) ✔️"
+	@echo "$(CYAN)Localização: $(LIB_DIR)/$(LIB_NAME)$(CLR_RMV)"
+
+# Compilar objetos da biblioteca
+$(OBJ_DIR)/%.o: src/%.c
+	@mkdir -p $(dir $@)
+	@echo "$(YELLOW)Compilando$(CLR_RMV) $<"
+	@$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDES)
+
+# Compilar MinilibX
+mlx:
+	@echo "$(GREEN)Compilando MinilibX$(CLR_RMV)..."
+	@make -C $(MLX_PATH) --silent
+
+# Limpar objetos
+clean:
+	@$(RM) -rf $(OBJ_DIR)
+	@echo "$(RED)Removendo objetos da biblioteca$(CLR_RMV) ✔️"
+
+# Limpar tudo
+fclean: clean
+	@$(RM) -rf $(LIB_DIR)
+	@echo "$(RED)Removendo $(LIB_NAME)$(CLR_RMV) ✔️"
+
+# Recompilar
+re: fclean all
+
+# Instalar biblioteca (copiar para diretório padrão)
+install: $(LIB_NAME)
+	@echo "$(GREEN)Instalando biblioteca$(CLR_RMV)..."
+	@mkdir -p ../minishell/lib
+	@cp $(LIB_DIR)/$(LIB_NAME) ../minishell/lib/
+	@cp includes/libast_visualizer.h ../minishell/includes/
+	@echo "$(GREEN)Biblioteca instalada em ../minishell/$(CLR_RMV) ✔️"
+
+# Criar exemplo de uso
+example: $(LIB_NAME)
+	@echo "$(GREEN)Compilando exemplo$(CLR_RMV)..."
+	@$(CC) $(CFLAGS) examples/test_lib.c -L$(LIB_DIR) -last_visualizer -L$(MLX_PATH) -lmlx -lmlx_Linux -lX11 -lXext -lm -o example_ast $(INCLUDES)
+	@echo "$(GREEN)Exemplo criado: ./example_ast$(CLR_RMV) ✔️"
+
+# Mostrar informações da biblioteca
+info:
+	@echo "$(CYAN)=== INFORMAÇÕES DA BIBLIOTECA AST VISUALIZER ===$(CLR_RMV)"
+	@echo "$(YELLOW)Nome:$(CLR_RMV) $(LIB_NAME)"
+	@echo "$(YELLOW)Localização:$(CLR_RMV) $(LIB_DIR)/$(LIB_NAME)"
+	@echo "$(YELLOW)Header público:$(CLR_RMV) includes/libast_visualizer.h"
+	@echo "$(YELLOW)Dependências:$(CLR_RMV) MinilibX, X11, Xext, math"
+	@echo ""
+	@echo "$(CYAN)Para usar no seu minishell:$(CLR_RMV)"
+	@echo "  1. Compilar: make -f Makefile.lib"
+	@echo "  2. Incluir: #include \"libast_visualizer.h\""
+	@echo "  3. Linkar: -L$(LIB_DIR) -last_visualizer -lmlx -lmlx_Linux -lX11 -lXext -lm"
+
+# Mostrar ajuda
+help:
+	@echo "$(CYAN)=== MAKEFILE DA BIBLIOTECA AST VISUALIZER ===$(CLR_RMV)"
+	@echo ""
+	@echo "$(YELLOW)Targets disponíveis:$(CLR_RMV)"
+	@echo "  $(GREEN)all$(CLR_RMV)      - Compila a biblioteca (padrão)"
+	@echo "  $(GREEN)clean$(CLR_RMV)    - Remove objetos"
+	@echo "  $(GREEN)fclean$(CLR_RMV)   - Remove tudo"
+	@echo "  $(GREEN)re$(CLR_RMV)       - Recompila tudo"
+	@echo "  $(GREEN)install$(CLR_RMV)  - Instala no diretório do minishell"
+	@echo "  $(GREEN)example$(CLR_RMV)  - Compila exemplo de uso"
+	@echo "  $(GREEN)info$(CLR_RMV)     - Mostra informações da biblioteca"
+	@echo "  $(GREEN)help$(CLR_RMV)     - Mostra esta ajuda"
+
+.PHONY: all clean fclean re mlx install example info help

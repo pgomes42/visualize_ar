@@ -177,14 +177,14 @@ int key_hook(int keycode, t_data *data)
 	else if (keycode == KEY_1)
 	{
 		if (data->ast)
-			ft_clear_ast(data->ast);
+			lib_clear_ast_internal(data->ast);
 		data->ast = ast_create_example();
 		printf("🎨 Exemplo 1: (ls -la | grep txt) && echo found\n");
 	}
 	else if (keycode == KEY_2)
 	{
 		if (data->ast)
-			ft_clear_ast(data->ast);
+			lib_clear_ast_internal(data->ast);
 		data->ast = ast_create_colorful_example();
 		printf("🎨 Exemplo 2: (cat file.txt | sort -r) || (echo error > log)\n");
 	}
@@ -192,7 +192,7 @@ int key_hook(int keycode, t_data *data)
 	{
 		
 		if (data->ast)
-			ft_clear_ast(data->ast);
+			lib_clear_ast_internal(data->ast);
 		data->ast = ast_create_complex_example();
 		printf("🎨 Exemplo 3: find . -name *.c || (make && ./program)\n");
 	}

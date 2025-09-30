@@ -1,4 +1,9 @@
-/* ************************************************************************** */
+/* **********void lib_clear_ast(t_ast *ast)
+{
+    if (!ast)
+        return ;
+    lib_clear_ast(ast->left);
+    lib_clear_ast(ast->right);********************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
@@ -11,19 +16,20 @@
 /* ************************************************************************** */
 
 #include "visualizer_ar.h"
-void ft_clear_ast(t_ast *ast)
+
+/* Função específica da biblioteca para limpeza interna */
+void lib_clear_ast_internal(t_ast *ast)
 {
     if (!ast)
         return;
-    ft_clear_ast(ast->left);
-    ft_clear_ast(ast->right);
+    lib_clear_ast_internal(ast->left);
+    lib_clear_ast_internal(ast->right);
     
     /* Libera a memória do data se for um ponteiro alocado */
     if (ast->data)
         free(ast->data);
         
     free(ast);
-    ast = NULL;
 }
 
 int ft_get_num_parent(t_ast *ast, int i)

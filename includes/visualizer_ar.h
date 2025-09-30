@@ -6,7 +6,7 @@
 /*   By: pgomes <pgomes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 11:17:43 by pgomes            #+#    #+#             */
-/*   Updated: 2025/09/30 11:23:25 by pgomes           ###   ########.fr       */
+/*   Updated: 2025/09/30 13:00:12 by pgomes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ typedef struct s_data
 }   t_data;
 
 int ft_get_num_parent(t_ast *ast, int i);
-void ft_clear_ast(t_ast *ast);
+void lib_clear_ast_internal(t_ast *ast);  /* Função interna da biblioteca */
 void ft_creat_ast(t_data *data);
 int ft_draw_circle(t_data *data, int start_y, int start_x, int radius, int color);
 int	ft_draw_background(t_img *img);
