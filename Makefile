@@ -6,7 +6,7 @@
 #    By: pgomes <pgomes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/21 09:44:09 by pgomes            #+#    #+#              #
-#    Updated: 2025/09/25 21:53:05 by pgomes           ###   ########.fr        #
+#    Updated: 2025/09/30 10:58:48 by pgomes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,8 @@ OBJ_DIR				= obj
 PATH_LIBS 			=  -L$(MLX_PATH)
 SRCS      			=	src/main.c\
 						src/render.c\
-						src/ast.c
+						src/ast.c\
+						src/ast_adapter.c
                
 OBJS				= $(addprefix $(OBJ_DIR)/, $(SRCS:src/%.c=%.o)) 
              

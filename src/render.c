@@ -6,7 +6,7 @@
 /*   By: pgomes <pgomes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 09:58:45 by pgomes            #+#    #+#             */
-/*   Updated: 2025/09/29 12:39:51 by pgomes           ###   ########.fr       */
+/*   Updated: 2025/09/30 11:26:49 by pgomes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,28 @@ int key_hook(int keycode, t_data *data)
 		data->offset_y += MOVE_SPEED;
 	else if (keycode == KEY_DOWN)
 		data->offset_y -= MOVE_SPEED;
+	else if (keycode == KEY_1)
+	{
+		if (data->ast)
+			ft_clear_ast(data->ast);
+		data->ast = ast_create_example();
+		printf("🎨 Exemplo 1: (ls -la | grep txt) && echo found\n");
+	}
+	else if (keycode == KEY_2)
+	{
+		if (data->ast)
+			ft_clear_ast(data->ast);
+		data->ast = ast_create_colorful_example();
+		printf("🎨 Exemplo 2: (cat file.txt | sort -r) || (echo error > log)\n");
+	}
+	else if (keycode == KEY_3)
+	{
+		
+		if (data->ast)
+			ft_clear_ast(data->ast);
+		data->ast = ast_create_complex_example();
+		printf("🎨 Exemplo 3: find . -name *.c || (make && ./program)\n");
+	}
 	
 	render_tree(data);
 	return (0);

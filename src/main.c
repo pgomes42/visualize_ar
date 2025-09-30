@@ -6,7 +6,7 @@
 /*   By: pgomes <pgomes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 11:42:18 by pgomes            #+#    #+#             */
-/*   Updated: 2025/09/29 12:48:11 by pgomes           ###   ########.fr       */
+/*   Updated: 2025/09/30 11:23:22 by pgomes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,23 @@ void ft_put_str_ast(t_data *data, t_ast *ast, t_inic *inic)
 {
     t_inic *inic_tmp;
     int num_par;
+    char *text_to_show;
+    int text_color;
     
     if (!ast)
         return ; 
+        
+    /* Determina o texto a mostrar baseado no tipo de dados */
+    if (ast->data)
+        text_to_show = (char *)ast->data;
+    else
+        text_to_show = "NULL";
+    
+    /* Determina a cor baseada no tipo de comando */
+    text_color = get_text_color(ast);
+        
     num_par = ft_get_num_parent(ast, 0);
-     mlx_string_put(data->mlx_ptr, data->mlx_win, inic->x1 - 10 + data->offset_x, inic->y1 + data->offset_y, 0xFFFFFF, "PACHECO");
+    mlx_string_put(data->mlx_ptr, data->mlx_win, inic->x1 - 10 + data->offset_x, inic->y1 + data->offset_y, text_color, text_to_show);
     inic_tmp = ft_get_inic(inic, 3, num_par);
     ft_put_str_ast(data, ast->left, inic_tmp);
     free(inic_tmp);
@@ -44,14 +56,26 @@ void ft_put_str_ast(t_data *data, t_ast *ast, t_inic *inic)
 
 static int ft_draw(t_data *data)
 {
-    ft_creat_ast(data);
+    /* Usar função automática para criar AST */
+    if (!data->ast)
+    {
+        printf("🎨 Criando AST colorida para demonstração...\n");
+        data->ast = ast_create_colorful_example();
+        if (!data->ast)
+        {
+            printf("❌ Erro ao criar AST automaticamente\n");
+            return (1);
+        }
+        printf("✅ AST criada: (cat file.txt | sort -r) || (echo error > log.txt)\n");
+    }
+    
     ft_draw_background(data->img);
-     mlx_put_image_to_window(data->mlx_ptr, data->mlx_win, data->img->img,0 , 0);
+    mlx_put_image_to_window(data->mlx_ptr, data->mlx_win, data->img->img, 0, 0);
  
     ft_draw_ast(data, data->ast, data->inic);
     ft_draw_nodes(data, data->ast, data->inic);
     ft_put_str_ast(data, data->ast, data->inic);
-      return (0);
+    return (0);
 }
 
 static void ft_inic(t_data *data)
@@ -69,6 +93,7 @@ static void ft_inic(t_data *data)
     data->mlx_ptr = NULL;
     data->mlx_win = NULL;
     data->img->img = NULL;
+    data->ast = NULL;  /* Inicializar ast como NULL */
     data->inic->x1 = (WIDTH / 2);
     data->inic->y1 = 100;
     data->inic->x2 = -1;
@@ -89,6 +114,17 @@ int main()
         free(data.inic);
         return (1);
     }
+    
+    /* Mostrar instruções de uso */
+    printf("🎨 === VISUALIZADOR DE AST COM CORES === 🎨\n");
+    printf("📋 Instruções:\n");
+    printf("   1️⃣  - Exemplo simples: (ls -la | grep txt) && echo found\n");
+    printf("   2️⃣  - Exemplo colorido: (cat file.txt | sort -r) || (echo error > log)\n");
+    printf("   3️⃣  - Exemplo complexo: find . -name *.c || (make && ./program)\n");
+    printf("   ⬅️➡️⬆️⬇️ - Mover visualização\n");
+    printf("   ESC - Sair\n");
+    printf("🎨 Cores: 🟢Comandos 🔵Pipe 🟡AND 🟠OR 🟣Redirect\n\n");
+    
     data.img->img = mlx_new_image(data.mlx_ptr, WIDTH, HEIGHT);
     if (!data.img->img)
     {
