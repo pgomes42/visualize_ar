@@ -4,22 +4,28 @@ Este diretório contém vídeos demonstrativos do **AST Visualizer** em ação.
 
 ## 📹 Vídeos Disponíveis
 
-### 1. **Demonstração Principal** 
-- **Arquivo**: `ast_visualizer_demo.mp4` ou `ast_visualizer_demo.gif`
-- **Duração**: ~2-3 minutos
-- **Conteúdo**: 
-  - Compilação e execução do projeto
-  - Integração com minishell
-  - Visualização de diferentes tipos de AST
-  - Comandos interativos e navegação
+### 1. **GIF Demonstrativo Principal** ⭐
+- **Arquivo**: `ast_visualizer_demo.gif`
+- **Tamanho**: ~260KB
+- **Resolução**: 800x450
+- **FPS**: 10
+- **Uso**: README principal, documentação completa
+- **Reprodução**: Automática no GitHub
 
-### 2. **Tutorial de Uso**
-- **Arquivo**: `tutorial_uso.mp4` ou `tutorial_uso.gif` 
-- **Duração**: ~1-2 minutos
-- **Conteúdo**:
-  - Como compilar o projeto
-  - Como usar o comando `ast_visualize`
-  - Exemplos práticos de comandos
+### 2. **GIF Compacto** 🎯
+- **Arquivo**: `ast_visualizer_demo_small.gif` 
+- **Tamanho**: ~180KB
+- **Resolução**: 600x338
+- **FPS**: 5
+- **Uso**: Documentação rápida, apresentações
+- **Reprodução**: Automática, carregamento rápido
+
+### 3. **Vídeo Original Completo** 📱
+- **Arquivo**: `Gravação de ecrã de 2025-10-01 14-46-12.mp4`
+- **Tamanho**: ~470KB
+- **Duração**: 1min 59s
+- **Qualidade**: Alta definição (1920x1080)
+- **Uso**: Apresentações profissionais, análise detalhada
 
 ## 🚀 Como Usar os Vídeos
 

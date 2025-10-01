@@ -29,25 +29,41 @@
 - ✅ **Performance**: Optimized for real-time visualization
 - ✅ **Integration**: Easy integration with existing Minishell projects
 
-## 🎥 Demo Video
+## 🎥 Demo - AST Visualizer in Action
 
-**See AST Visualizer in Action!** 🎬
+**See the magic happen!** ✨ Watch how complex shell commands transform into beautiful, interactive tree visualizations:
 
-Watch our comprehensive demonstration showing:
-- Real-time AST visualization
-- Minishell integration
-- Interactive navigation
-- Color-coded command types
+### 🎬 **Quick Demo** (GIF)
+![AST Visualizer Demo](demo/ast_visualizer_demo.gif)
 
-**📹 Video**: [`demo/Gravação de ecrã de 2025-10-01 14-46-12.mp4`](demo/Gravação%20de%20ecrã%20de%202025-10-01%2014-46-12.mp4)
+*Real-time demonstration showing AST creation, color-coding, and interactive navigation*
 
-*Note: Download the video file to see the full demonstration of AST Visualizer features and capabilities.*
+### 📱 **Compact Demo** (Small GIF)
+![AST Visualizer Small Demo](demo/ast_visualizer_demo_small.gif)
 
-### 🎯 What the Demo Shows:
-- ✅ **Compilation and Setup** - Building the library and examples
-- ✅ **Minishell Integration** - Using `ast_visualize` builtin command
-- ✅ **Interactive Visualization** - Real-time AST rendering with colors
-- ✅ **Different Command Types** - Pipes, redirections, logical operators
+*Quick overview of main features and functionality*
+
+### 🎞️ **Full Video** (MP4)
+**📹 Complete Demo**: [`demo/Gravação de ecrã de 2025-10-01 14-46-12.mp4`](demo/Gravação%20de%20ecrã%20de%202025-10-01%2014-46-12.mp4)
+
+*Download for high-quality, full-length demonstration with audio*
+
+### 🎯 **What You'll See**:
+- ✅ **Live Compilation** - Building library and examples from scratch
+- ✅ **Minishell Integration** - Seamless `ast_visualize` builtin command
+- ✅ **Real-time Visualization** - Watch ASTs generate instantly
+- ✅ **Color-coded Magic** - Different colors for pipes, redirections, commands
+- ✅ **Interactive Controls** - Keyboard navigation between examples
+- ✅ **Memory Safety** - No leaks, clean resource management
+
+### 🎨 **Visual Features Shown**:
+| Feature | Demo Timestamp | Description |
+|---------|---------------|-------------|
+| 🟢 **Commands** | 0:30-0:45 | Green nodes for `ls`, `cat`, `echo` |
+| 🔵 **Pipes** | 0:45-1:00 | Blue nodes for `\|` operators |
+| 🟠 **Redirections** | 1:00-1:15 | Orange nodes for `>`, `<`, `>>` |
+| 🟣 **Logic Ops** | 1:15-1:30 | Purple nodes for `&&`, `\|\|` |
+| 🔴 **Parentheses** | 1:30-1:45 | Red nodes for grouping `()` |
 - ✅ **Keyboard Controls** - Switching between examples and navigation
 
 ## ✨ Features
