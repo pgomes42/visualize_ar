@@ -1,0 +1,41 @@
+# Git attributes for AST Visualizer repository
+
+# Video files - treat as binary
+*.mp4 binary
+*.avi binary
+*.mov binary
+*.wmv binary
+*.gif binary
+*.webm binary
+
+# Documentation files - treat as text with LF line endings
+*.md text eol=lf
+*.txt text eol=lf
+
+# Source code files - treat as text with LF line endings
+*.c text eol=lf
+*.h text eol=lf
+
+# Makefiles - treat as text with LF line endings
+Makefile text eol=lf
+*.mk text eol=lf
+
+# Configuration files
+*.conf text eol=lf
+*.config text eol=lf
+
+# Shell scripts
+*.sh text eol=lf
+
+# Ignore generated files from diff/merge
+*.o binary
+*.a binary
+minishell binary
+examples/test_lib binary
+vizualizer_ar binary
+
+# ASCIInema recordings (if used)
+*.cast text eol=lf
+
+# JSON files
+*.json text eol=lf
