@@ -8,6 +8,7 @@
 ## 📋 Table of Contents
 
 - [Overview](#overview)
+- [Demo Video](#demo-video)
 - [Features](#features)
 - [Screenshots](#screenshots)
 - [Installation](#installation)
@@ -27,6 +28,27 @@
 - ✅ **Professional**: Clean, documented, and maintainable code
 - ✅ **Performance**: Optimized for real-time visualization
 - ✅ **Integration**: Easy integration with existing Minishell projects
+
+## 🎥 Demo Video
+
+**See AST Visualizer in Action!** 🎬
+
+Watch our comprehensive demonstration showing:
+- Real-time AST visualization
+- Minishell integration
+- Interactive navigation
+- Color-coded command types
+
+**📹 Video**: [`demo/Gravação de ecrã de 2025-10-01 14-46-12.mp4`](demo/Gravação%20de%20ecrã%20de%202025-10-01%2014-46-12.mp4)
+
+*Note: Download the video file to see the full demonstration of AST Visualizer features and capabilities.*
+
+### 🎯 What the Demo Shows:
+- ✅ **Compilation and Setup** - Building the library and examples
+- ✅ **Minishell Integration** - Using `ast_visualize` builtin command
+- ✅ **Interactive Visualization** - Real-time AST rendering with colors
+- ✅ **Different Command Types** - Pipes, redirections, logical operators
+- ✅ **Keyboard Controls** - Switching between examples and navigation
 
 ## ✨ Features
 
