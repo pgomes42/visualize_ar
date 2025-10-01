@@ -6,7 +6,7 @@
 /*   By: pgomes <pgomes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 08:36:38 by pgomes            #+#    #+#             */
-/*   Updated: 2025/09/30 15:31:36 by pgomes           ###   ########.fr       */
+/*   Updated: 2025/10/01 10:30:29 by pgomes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int main(int argc, char *argv[], char *env[])
         data.line = readline("minishell$ ");
         if(data.line)
         {
-            if(data.line[0])
+            if(ft_is_empty(data.line))
                 add_history(data.line);
             
             ft_tokenizing(&data, data.line);
